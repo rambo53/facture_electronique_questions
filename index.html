@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire Dossier</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Nouveau Dossier</h2>
+    <form action="#" method="POST">
+        <div class="form-group">
+            <label for="nomDossier">Nom du dossier :</label>
+            <input type="text" id="nomDossier" name="nomDossier" placeholder="Ex: Projet Alpha" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="nomCollaborateur">Nom du collaborateur :</label>
+            <input type="text" id="nomCollaborateur" name="nomCollaborateur" placeholder="Ex: FKV" required>
+        </div>
+		
+		<div id="divOption" class="form-group hide">
+			<label for="monChoix">Sélectionnez une option :</label>
+			<select id="monChoix" name="monChoix" required>
+				<option value="" disabled selected hidden>Choisissez une option...</option>
+				<option value="BTP">BTP</option>
+				<option value="RESTAURANT">RESTAURANT</option>
+				<option value="LAVEUR_VOITURE">LAVEUR_VOITURE</option>
+			</select>
+		</div>
+		
+		<div id="divQuestions" class="hide">
+			<div class="question-row">
+				<span class="question-text">toto ?</span>
+				<label class="switch">
+					<input type="checkbox" name="question_1">
+					<span class="slider round"></span>
+				</label>
+			</div>
+			<div class="question-row">
+				<span class="question-text">toto ?</span>
+				<label class="switch">
+					<input type="checkbox" name="question_1">
+					<span class="slider round"></span>
+				</label>
+			</div>
+			<div class="question-row">
+				<span class="question-text">toto ?</span>
+				<label class="switch">
+					<input type="checkbox" name="question_1">
+					<span class="slider round"></span>
+				</label>
+			</div>
+        </div>
+		
+        <button id="buttonValidation" class="hide" type="submit">Valider</button>
+    </form>
+</div>
+
+</body>
+</html>
+<script src="js/global.js"></script>
