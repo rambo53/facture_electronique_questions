@@ -144,6 +144,7 @@ h2 {
     font-size: 16px;
     color: #444;
     font-weight: 500;
+	max-width: 80%;
 }
 
 /* Bouton de validation */
