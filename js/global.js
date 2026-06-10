@@ -53,3 +53,91 @@ document.addEventListener("DOMContentLoaded", function () {
         selectOption.addEventListener("change", verifierFormulaire);
     }
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+	const selectOption = document.getElementById("monChoix");
+	const option = document.createElement("option");
+	option.value = "";
+    option.textContent = "Choisir typologie...";
+	selectOption.appendChild(option);
+	
+	if (typeof dict_typologie !== 'undefined' && selectOption) {
+		for (const [cle, donnees] of Object.entries(dict_typologie)){
+			// Création d'une balise <option value="CODE">LABEL</option>
+			const option_dyn = document.createElement("option");
+			option_dyn.value = cle;
+            option_dyn.textContent = donnees["label"];
+			selectOption.appendChild(option_dyn);
+		}
+	}
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const selectTypologie = document.getElementById("monChoix");
+    const divQuestions = document.getElementById("divQuestions"); // Le conteneur HTML des questions
+
+    selectTypologie.addEventListener("change", function (evenement) {
+        const optionChoisie = evenement.target.value; 
+
+        // 1. IMPORTANT : On vide le conteneur à chaque changement pour éviter l'accumulation
+        divQuestions.innerHTML = "";
+
+        if (optionChoisie === "") {
+            return;
+        }
+
+        const donneesTypologie = dict_typologie[optionChoisie];
+
+        if (donneesTypologie) {
+            const list_questions = donneesTypologie["questions"];			
+			
+            // 2. Correction des accolades { } pour le forEach
+            list_questions.forEach((question) => {
+                
+                // On vérifie que la question existe bien dans ton dictionnaire de questions
+                if (question in dict_questions) {
+                    const question_text = dict_questions[question]["question"];
+
+                    // --- CRÉATION DES ÉLÉMENTS HTML ---
+                    
+                    // Conteneur de la ligne (<div class="question-row">)
+                    const main_div = document.createElement("div");
+                    main_div.classList.add("question-row");
+
+                    // Texte de la question (<span class="question-text">)
+                    const span = document.createElement("span");
+                    span.classList.add("question-text");
+                    span.textContent = question_text;
+
+                    // Conteneur du switch (<label class="switch">)
+                    const label = document.createElement("label");
+                    label.classList.add("switch");
+
+                    // La checkbox (<input type="checkbox">)
+                    const input = document.createElement("input");
+                    input.setAttribute("type", "checkbox");
+                    input.setAttribute("name", dict_questions[question]["cas"]);
+
+                    // Le slider rond (<span class="slider round">)
+                    const second_span = document.createElement("span");
+                    second_span.classList.add("slider", "round");
+
+                    // --- IMBRICATION DES ÉLÉMENTS (L'étape manquante !) ---
+                    
+                    // On assemble le switch : on met l'input et le slider DANS le label
+                    label.appendChild(input);
+                    label.appendChild(second_span);
+
+                    // On assemble la ligne : on met le texte et le switch DANS la ligne
+                    main_div.appendChild(span);
+                    main_div.appendChild(label);
+
+                    // Enfin, on injecte la ligne complète dans le conteneur principal de la page
+                    divQuestions.appendChild(main_div);
+                }
+            }); 
+        }
+    });
+});
+
