@@ -1,186 +1,1717 @@
-const dict_questions = {
-	"q_1": {
-		"question": "Je demande un acompte avant la réalisation de ma prestation. Que dois-je faire ?",
-		"cas": "c_1"
+const dict_categories = {
+	"tiers_payeur": {
+		"label": "Tiers payeur",
+		"cas" :[
+			"c_2",
+			"c_3"
+		]
 	},
-	"q_2": {
-		"question": "Je fais payer mon client immédiatement au moment de la vente. Est-ce que cela change quelque chose pour la facture électronique ? ",
-		"cas": "c_2"
+	"facturation_multi_flux": {
+		"label": "Facturation multi-flux",
+		"cas" :[
+			"c_1"
+		]
 	},
-	"q_3": {
-		"question": "Mon client reçoit la facture mais c’est une autre personne ou un organisme qui paie. Comment gérer cela ?",
-		"cas": "c_3"
+	"affacturage": {
+		"label": "Affacturage",
+		"cas" :[
+
+		]
+	},
+	"intermediaires_mandats": {
+		"label": "Intermédiaires / Mandats",
+		"cas" :[
+
+		]
+	},
+	"soustraitance_cotraitance": {
+		"label": "Sous-traitance / Co-traitance",
+		"cas" :[
+
+		]
+	},
+	"encaissements": {
+		"label": "Encaissements",
+		"cas" :[
+
+		]
+	},
+	"auto_facturation": {
+		"label": "Auto-facturation",
+		"cas" :[
+
+		]
+	},
+	"acomptes_conditions_de_paiement": {
+		"label": "Acomptes / Conditions de paiement",
+		"cas" :[
+
+		]
+	},
+	"moyens_de_paiement": {
+		"label": "Moyens de paiement",
+		"cas" :[
+
+		]
+	},
+	"cas_sectoriels": {
+		"label": "Cas sectoriels",
+		"cas" :[
+
+		]
+	},
+	"regimes_tva specifiques": {
+		"label": "Régimes TVA spécifiques",
+		"cas" :[
+
+		]
+	},
+	"international": {
+		"label": "International",
+		"cas" :[
+
+		]
 	}
 }
 
+const dict_secteur = {
+    "btp": {
+        "label": "BTP",
+		"cas" :[
+			"c_2"
+		]
+    },
+    "construction": {
+        "label": "Construction"
+    },
+    "it": {
+        "label": "IT"
+    },
+    "telecom": {
+        "label": "Télécom"
+    },
+    "commerce": {
+        "label": "Commerce"
+    },
+    "distribution": {
+        "label": "Distribution"
+    },
+    "e_commerce": {
+        "label": "E-commerce"
+    },
+    "marketplaces": {
+        "label": "Marketplaces"
+    },
+    "professions_liberales": {
+        "label": "Professions libérales"
+    },
+    "transport": {
+        "label": "Transport"
+    },
+    "logistique": {
+        "label": "Logistique"
+    },
+    "banque": {
+        "label": "Banque"
+    },
+    "assurance": {
+        "label": "Assurance"
+    },
+    "immobilier": {
+        "label": "Immobilier"
+    },
+    "energie": {
+        "label": "Énergie"
+    },
+    "industrie": {
+        "label": "Industrie"
+    },
+    "manufacturing": {
+        "label": "Manufacturing"
+    },
+    "luxe": {
+        "label": "Luxe"
+    },
+    "mode": {
+        "label": "Mode"
+    },
+    "restauration": {
+        "label": "Restauration"
+    },
+    "hotellerie": {
+        "label": "Hôtellerie"
+    },
+    "sante": {
+        "label": "Santé"
+    },
+    "pharma": {
+        "label": "Pharma"
+    },
+    "international": {
+        "label": "International"
+    },
+    "outre_mer": {
+        "label": "Outre-mer"
+    }
+};
+
 const dict_cas = {
 	"c_1":{
-		"label" : "CAS 20/21 – Acompte",
+		"label" : "CAS 1 - Une facture pour plusieurs commandes ou livraisons",
 		"procedure" : {
-			"step_1":{
+			"description":{
 				"label": "Description",
-				"text" : "L’acompte constitue un paiement anticipé versé avant la livraison du bien ou la réalisation complète de la prestation. Il engage définitivement les parties au contrat. \
-							Une facture d’acompte peut être émise avant la facture définitive. Elle permet de constater la somme demandée ou encaissée avant l’exécution complète de l’opération. "
+				"text" : ""
 			},
-			"step_2":{
+			"impact_comptable":{
 				"label": "Impact comptable",
-				"text" : "L’encaissement de l’acompte doit être suivi séparément. Une régularisation intervient lors de l’émission de la facture finale. \
-						  Le traitement de TVA dépend de la nature de l’opération et de la date d’exigibilité. Le collaborateur doit donc distinguer la demande d’acompte, l’encaissement et la facture définitive. \
-						  Le risque principal est de comptabiliser deux fois le chiffre d’affaires ou de ne pas imputer correctement l’acompte sur la facture finale."
+				"text" : ""
 			},
-			"step_3":{
+			"impact_facture_electronique":{
 				"label": "Impact facture électronique",
-				"text" : "Les factures d’acompte devront être transmises comme les autres factures. Le lien entre la facture d’acompte et la facture définitive doit être conservé. \
-						  Les informations relatives au règlement doivent être suivies, en particulier lorsque la TVA est exigible à l’encaissement. \
-						  Le logiciel doit permettre d’identifier clairement ce qui relève de l’acompte et ce qui relève du solde."
+				"text" : ""
 			},
-			"step_4":{
+			"questions_a_poser":{
 				"label": "Questions à poser",
-				"text" : "• Un acompte est-il demandé systématiquement ? \
-				          • Quel est son montant ou son pourcentage ? \
-						  • À quel moment est-il encaissé ? \
-						  • Une facture d’acompte est-elle émise ? \
-						  • Comment l’acompte est-il déduit de la facture finale ? "
+				"text" : ""
 			},
-			"step_5":{
+			"controles":{
 				"label": "Contrôles",
-				"text" : "•  Vérifier la cohérence entre acompte et facture finale. \
-						  • Vérifier le traitement de TVA. \
-						  • Vérifier l’imputation correcte du règlement. \
-						  • Contrôler que l’acompte n’est pas comptabilisé deux fois. \
-						  • Vérifier que le solde restant dû est cohérent. "
+				"text" : ""
 			},
-			"step_6":{
+			"vigilances":{
 				"label": "Vigilances",
-				"text" : "• Ne pas confondre acompte et arrhes. \
-							• Éviter les doubles comptabilisations. \
-							• Vérifier la traçabilité des règlements. \
-							• Attention aux logiciels qui ne lient pas correctement acompte et facture finale. \
-							• Attention aux régularisations ou annulations d’acompte. "
+				"text" : ""
 			},
-			"step_7":{
+			"reponse_rapide":{
 				"label": "Réponse rapide",
-				"text" : "Un acompte doit être suivi dès son émission et relié à la facture finale afin d’assurer une traçabilité complète des flux et d’éviter toute double déclaration."
+				"text" : ""
 			},
 		}
 	},
 	"c_2":{
 		"label" : "CAS 2 - Facture déjà réglée à l’émission",
 		"procedure" : {
-			"step_1":{
+			"description":{
 				"label": "Description",
-				"text" : "Le règlement intervient avant ou simultanément à l’émission de la facture. C’est notamment le cas des ventes en ligne avec paiement immédiat, \
-					des abonnements réglés à la commande ou de certaines prestations encaissées avant leur réalisation. \
-					La facture est émise alors que le paiement est déjà connu et encaissé. "
+				"text" : ""
 			},
-			"step_2":{
+			"impact_comptable":{
 				"label": "Impact comptable",
-				"text" : "La comptabilisation de la facture reste identique. \
-							La créance client existe juridiquement mais son extinction est immédiate puisque le règlement est connu dès l’émission. \
-							Les comptes de vente, de TVA et de trésorerie sont impactés dès l’enregistrement. "
+				"text" : ""
 			},
-			"step_3":{
+			"impact_facture_electronique":{
 				"label": "Impact facture électronique",
-				"text" : "La facture électronique doit intégrer l’information selon laquelle le règlement est déjà intervenu. \
-							Les données relatives au paiement, lorsque disponibles, comme la date, le montant et le moyen de paiement, doivent être transmises dans les flux prévus. \
-							Il n’est normalement pas nécessaire d’envoyer un flux complémentaire de suivi d’encaissement si l’information est déjà correctement intégrée à l’émission."
+				"text" : ""
 			},
-			"step_4":{
+			"questions_a_poser":{
 				"label": "Questions à poser",
-				"text" : "• Le paiement intervient-il avant ou au moment de la facture ? \
-							• Le montant est-il réglé en totalité ? \
-							• Le moyen de paiement est-il connu ? \
-							• Existe-t-il un risque d’annulation ou de remboursement ultérieur ? "
+				"text" : ["Le paiement intervient-il avant ou au moment de la facture ?",
+							"Le montant est-il réglé en totalité ?",
+							"Le moyen de paiement est-il connu ?",
+							"Existe-t-il un risque d’annulation ou de remboursement ultérieur ?"
+				]
 			},
-			"step_5":{
+			"controles":{
 				"label": "Contrôles",
-				"text" : "• Vérifier que le paiement est effectivement encaissé. \
-							• Vérifier la cohérence entre montant facturé et montant encaisser. \
-							• Vérifier la date du règlement. \
-							• Vérifier l’absence de solde restant dû. "
+				"text" : ""
 			},
-			"step_6":{
+			"vigilances":{
 				"label": "Vigilances",
-				"text" : "• Ne pas déclarer un paiement non encore encaissé. \
-							• Distinguer paiement effectif et simple autorisation bancaire. \
-							• Vérifier les remboursements éventuels. "
+				"text" : ""
 			},
-			"step_7":{
+			"reponse_rapide":{
 				"label": "Réponse rapide",
-				"text" : "Si le client a déjà payé au moment de l’émission de la facture, l’information de règlement doit être intégrée dès l’origine dans la facture électronique."
+				"text" : ""
 			}
 		}
 	},
 	"c_3": {
 		"label" : "CAS 3 - Facture payée par un tiers ",
 		"procedure" : {
-			"step_1":{
+			"description":{
 				"label": "Description",
-				"text" : "Le destinataire de la facture est différent du payeur réel. \
-							Exemples fréquents : assurance, mutuelle, organisme financeur, société mère, centrale de paiement ou organisme de prise en charge. \
-							Le client reste celui à qui la facture est adressée, même si le règlement provient d’un autre acteur. "
+				"text" : ""
 			},
-			"step_2":{
+			"impact_comptable":{
 				"label": "Impact comptable",
-				"text" : "La facture reste établie au nom du client concerné. \
-							Le règlement est rapproché du compte client même lorsqu’il provient d’un tiers. Des comptes spécifiques peuvent être utilisés selon l’organisation comptable ou selon le type de tiers payeur. \
-							Le suivi doit permettre d’identifier les restes à charge, les paiements partiels ou les rejets de prise en charge. "
+				"text" : ""
 			},
-			"step_3":{
+			"impact_facture_electronique":{
 				"label": "Impact facture électronique",
-				"text" : "La facture identifie le client facturé. Les informations relatives au payeur peuvent devoir être communiquées lorsque le dispositif ou le logiciel le permet. \
-							Les flux de suivi des paiements devront permettre d’identifier l’encaissement provenant du tiers et de le rattacher à la bonne facture. "
+				"text" : ""
 			},
-			"step_4":{
+			"questions_a_poser":{
 				"label": "Questions à poser",
-				"text" : "• Qui reçoit la facture ? \
-							• Qui effectue le paiement ? \
-							• Le tiers paie-t-il totalement ou partiellement ? \
-							• Existe-t-il une convention de prise en charge ? \
-							• Y a-t-il un reste à charge pour le client ? "
+				"text" : [
+				]
 			},
-			"step_5":{
+			"controles":{
 				"label": "Contrôles",
-				"text" : "• Vérifier l’identité du client facturé. \
-							• Vérifier l’identité du tiers payeur. \
-							• Contrôler les montants réglés. \
-							• Contrôler les éventuels restes à charge. \
-							• Vérifier le lettrage du compte client. "
+				"text" : ""
 			},
-			"step_6":{
+			"vigilances":{
 				"label": "Vigilances",
-				"text" : "• Ne pas confondre client et payeur. \
-							• Vérifier les paiements partiels. \
-							• Gérer correctement les rejets de prise en charge. \
-							• Attention aux délais de règlement des organismes tiers."
+				"text" : ""
 			},
-			"step_7":{
+			"reponse_rapide":{
 				"label": "Réponse rapide",
-				"text" : "Le client facturé reste le destinataire de la facture, même si le règlement est effectué par un tiers. Le paiement doit simplement être rattaché à la bonne facture."
+				"text" : ""
+			}
+		}
+	},
+	"c_4": {
+		"label" : "CAS 4 - Facture partiellement payée par l'acheteur",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_5": {
+		"label" : "CAS 5 - Frais avec facture au nom de l'entreprise",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_6": {
+		"label" : "CAS 6 - Frais sans facture au nom de l'entreprise",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_7": {
+		"label" : "CAS 7 - Paiement par carte d'entreprise",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_8": {
+		"label" : "CAS 8 - Affacturage ou facture à régler à un tiers connu",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_9": {
+		"label" : "CAS 9 - Facture à régler à un tiers connu gérant aussi la commande ou la livraison",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_10": {
+		"label" : "CAS 10 - Affacturage avec tiers inconnu à l'émission",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_11": {
+		"label" : "CAS 11 - Facture reçue et traitée par un tiers pour l'acheteur",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_12": {
+		"label" : "CAS 12 - Intermédiaire côté acheteur gérant la facture",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_13": {
+		"label" : "CAS 13 - Sous-traitance avec paiement direct",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_14": {
+		"label" : "CAS 14 - Co-traitance B2B",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_15": {
+		"label" : "CAS 15 - Commande passée par un tiers",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_16": {
+		"label" : "CAS 16 - Débours : remboursement de frais payés pour le client",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_17a": {
+		"label" : "CAS 17A - Facture payée via un intermédiaire de paiement",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_17b": {
+		"label" : "CAS 17B - Facture payée via un intermédiaire de paiement avec mandat de facturation",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_18": {
+		"label" : "CAS 18 - Note de débit",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_19a": {
+		"label" : "CAS 19A - Facture émise sous mandat",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_19b": {
+		"label" : "CAS 19B - Auto-facturation",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_20": {
+		"label" : "CAS 20 - Facture d'acompte",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_21": {
+		"label" : "CAS 21 - Facture finale après acompte",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_22a": {
+		"label" : "CAS 22A - Escompte sur prestations de services",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_22b": {
+		"label" : "CAS 22B - Escompte sur vente de biens",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_23": {
+		"label" : "CAS 23 - Auto-facturation entre particulier et professionnel",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_24": {
+		"label" : "CAS 24 - Gestion des arrhes",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_25": {
+		"label" : "CAS 25 - Bons d'achat et cartes cadeaux",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_26": {
+		"label" : "CAS 26 - Facture avec retenue contractuelle",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_27": {
+		"label" : "CAS 27 - Tickets de péage",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_28": {
+		"label" : "CAS 28 - Notes de restaurant",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_29": {
+		"label" : "CAS 29 - Groupe TVA / assujetti unique",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_30": {
+		"label" : "CAS 30 - Facture émise après une vente déjà déclarée",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_31": {
+		"label" : "CAS 31 - Facture mixte",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_32": {
+		"label" : "CAS 32 - Paiements mensuels",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_33": {
+		"label" : "CAS 33 - TVA sur la marge",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_34": {
+		"label" : "CAS 34 - Encaissement partiel ou annulé",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_35": {
+		"label" : "CAS 35 - Notes d'auteur",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_36": {
+		"label" : "CAS 36 - Secret professionnel",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_37": {
+		"label" : "CAS 37 - Facturation dans une société en participation",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_38": {
+		"label" : "CAS 38 - Facture avec sous-lignes ou sous-totaux",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_39": {
+		"label" : "CAS 39 - Facture regroupant plusieurs vendeurs",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_40": {
+		"label" : "CAS 40 - Paiements groupés ou compensation",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_41": {
+		"label" : "CAS 41 - Troc interentreprises",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_42": {
+		"label" : "CAS 42 - Vente en détaxe",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_43": {
+		"label" : "CAS 43 - E-reporting sur opérations B2B internationales",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
+			}
+		}
+	},
+	"c_44": {
+		"label" : "CAS 44 - Transactions avec les DROM, COM ou TAAF",
+		"procedure" : {
+			"description":{
+				"label": "Description",
+				"text" : ""
+			},
+			"impact_comptable":{
+				"label": "Impact comptable",
+				"text" : ""
+			},
+			"impact_facture_electronique":{
+				"label": "Impact facture électronique",
+				"text" : ""
+			},
+			"questions_a_poser":{
+				"label": "Questions à poser",
+				"text" : ""
+			},
+			"controles":{
+				"label": "Contrôles",
+				"text" : ""
+			},
+			"vigilances":{
+				"label": "Vigilances",
+				"text" : ""
+			},
+			"reponse_rapide":{
+				"label": "Réponse rapide",
+				"text" : ""
 			}
 		}
 	}
+	
 }
 
-const dict_typologie = {
-	"BTP": {
-		"label": "B.T.P.",
-		"questions" :[
-			"q_1",
-			"q_3"
-		]
-	},
-	"RESTAURANT": {
-		"label": "Restaurant",
-		"questions" :[
-			"q_1",
-			"q_2"
-		]
-	},
-	"COMMERCE": {
-		"label": "Commerce",
-		"questions" :[
-			"q_1"
-		]
-	}
-}
