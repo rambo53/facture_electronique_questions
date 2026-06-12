@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const divOption = document.getElementById("divOption");
     const selectOption = document.getElementById("monChoix");
     const buttonValidation = document.getElementById("buttonValidation");
+	const divQuestions = document.getElementById("divCas");
+	const divTypologie = document.getElementById("divTypologie");
 
     // 2. Fonction principale de vérification
     function verifierFormulaire() {
@@ -26,8 +28,10 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             divOption.classList.add("hide");
             // Sécurité : Si on recache la liste, on réinitialise sa valeur et on cache le bouton
-            if (selectOption) selectOption.value = ""; 
+            if (selectOption) selectOption.value = "";
+			divQuestions.classList.add("hide");
             buttonValidation.classList.add("hide");
+			divTypologie.classList.add("hide");
             return; // On s'arrête là si les premiers inputs ne sont plus valides
         }
 
@@ -42,6 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             buttonValidation.classList.add("hide");
 			divQuestions.classList.add("hide");
+			divTypologie.classList.add("hide");
         }
     }
 
@@ -59,11 +64,11 @@ document.addEventListener("DOMContentLoaded", function () {
 	const selectOption = document.getElementById("monChoix");
 	const option = document.createElement("option");
 	option.value = "";
-    option.textContent = "Choisir typologie...";
+    option.textContent = "Choisir secteur...";
 	selectOption.appendChild(option);
 	
-	if (typeof dict_typologie !== 'undefined' && selectOption) {
-		for (const [cle, donnees] of Object.entries(dict_typologie)){
+	if (typeof dict_categories !== 'undefined' && selectOption) {
+		for (const [cle, donnees] of Object.entries(dict_categories)){
 			// Création d'une balise <option value="CODE">LABEL</option>
 			const option_dyn = document.createElement("option");
 			option_dyn.value = cle;
@@ -73,12 +78,34 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const selectTypologie = document.getElementById("monChoix");
-    const divQuestions = document.getElementById("divQuestions"); // Le conteneur HTML des questions
 
-    selectTypologie.addEventListener("change", function (evenement) {
-        const optionChoisie = evenement.target.value; 
+document.addEventListener("DOMContentLoaded", function () {
+	const selectTypologie = document.getElementById("monChoixTypologie");
+	const option = document.createElement("option");
+	option.value = "";
+    option.textContent = "Choisir typologie...";
+	selectTypologie.appendChild(option);
+	
+	if (typeof dict_secteur !== 'undefined' && selectTypologie) {
+		for (const [cle, donnees] of Object.entries(dict_secteur)){
+			// Création d'une balise <option value="CODE">LABEL</option>
+			const option_dyn = document.createElement("option");
+			option_dyn.value = cle;
+            option_dyn.textContent = donnees["label"];
+			selectTypologie.appendChild(option_dyn);
+		}
+	}
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const selectSecteur = document.getElementById("monChoix");
+    const divQuestions = document.getElementById("divCas"); // Le conteneur HTML des questions
+
+    selectSecteur.addEventListener("change", function (evenement) {
+        const optionChoisie = evenement.target.value;
+		const divTypologie = document.getElementById("divTypologie");
+		divTypologie.classList.remove("hide");
 
         // 1. IMPORTANT : On vide le conteneur à chaque changement pour éviter l'accumulation
         divQuestions.innerHTML = "";
@@ -87,17 +114,16 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const donneesTypologie = dict_typologie[optionChoisie];
+        const donneesTypologie = dict_categories[optionChoisie];
 
         if (donneesTypologie) {
-            const list_questions = donneesTypologie["questions"];			
+            const list_cas = donneesTypologie["cas"];		
 			
-            // 2. Correction des accolades { } pour le forEach
-            list_questions.forEach((question) => {
+            list_cas.forEach((cas) => {
                 
                 // On vérifie que la question existe bien dans ton dictionnaire de questions
-                if (question in dict_questions) {
-                    const question_text = dict_questions[question]["question"];
+                if (cas in dict_cas) {
+                    const question_text = dict_cas[cas]["label"];
 
                     // --- CRÉATION DES ÉLÉMENTS HTML ---
                     
@@ -107,8 +133,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // Texte de la question (<span class="question-text">)
                     const span = document.createElement("span");
-                    span.classList.add("question-text");
+                    span.classList.add("question-title");
                     span.textContent = question_text;
+					span.setAttribute("data-id-cas", cas);
+					
+					const ul = document.createElement("ul");
+					ul.classList.add("question-ul");
 
                     // Conteneur du switch (<label class="switch">)
                     const label = document.createElement("label");
@@ -117,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     // La checkbox (<input type="checkbox">)
                     const input = document.createElement("input");
                     input.setAttribute("type", "checkbox");
-                    input.setAttribute("name", dict_questions[question]["cas"]);
+                    input.setAttribute("name", dict_cas[cas]["label"]);
 
                     // Le slider rond (<span class="slider round">)
                     const second_span = document.createElement("span");
@@ -131,7 +161,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // On assemble la ligne : on met le texte et le switch DANS la ligne
                     main_div.appendChild(span);
-                    main_div.appendChild(label);
+					span.appendChild(ul);
+					
+					// mettre en place boucle sur questions
+					const list_questions_cas = dict_cas[cas]["procedure"]["questions_a_poser"]["text"];
+					
+					if(Array.isArray(list_questions_cas)){
+						list_questions_cas.forEach((question) => {
+							const li = document.createElement("li");
+							li.classList.add("question-li");
+							li.textContent = question;
+							ul.appendChild(li);
+						});	
+					}
+				
+					main_div.appendChild(label);
 
                     // Enfin, on injecte la ligne complète dans le conteneur principal de la page
                     divQuestions.appendChild(main_div);
@@ -141,3 +185,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+
+document.addEventListener("DOMContentLoaded", function () {
+    const selectTypologie = document.getElementById("monChoixTypologie");
+
+    selectTypologie.addEventListener("change", function (evenement) {
+       const optionChoisie = evenement.target.value;
+	   
+	   // si une option est choisit on requête le dict des typologie pour retrouver notre typologie
+	   // récupérer les cas associés à cette typologie depuis notre balise "span" et on les passe avec un background vert clair
+	   
+       if (optionChoisie === "") {
+            return;
+       }
+    });
+
+});
