@@ -243,3 +243,7 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.question_background{
+	background-color: lightgreen;
+}
