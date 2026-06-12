@@ -192,8 +192,8 @@ document.addEventListener("DOMContentLoaded", function () {
     selectTypologie.addEventListener("change", function (evenement) {
        const optionChoisie = evenement.target.value;
 	   
-	   // si une option est choisit on requête le dict des typologie pour retrouver notre typologie
-	   // récupérer les cas associés à cette typologie depuis notre balise "span" et on les passe avec un background vert clair
+	   // si une option est choisit on requête le dict des typologie pour retrouver notre typologie "question_background" css
+	   // récupérer les cas associés à cette typologie depuis notre balise "div" avec la classe "question_row" et on les passe avec un background vert clair
 	   
        if (optionChoisie === "") {
             return;
