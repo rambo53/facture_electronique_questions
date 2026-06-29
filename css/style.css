@@ -1,249 +1,261 @@
- body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+ :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --text-muted: #7f8c8d;
+            --color-oui: #2ecc71;
+            --color-oui-light: #e8f8f0;
+            --color-non: #e74c3c;
+            --color-non-light: #fceae9;
+            --border-color: #dcdde1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.3rem;
             margin: 0;
         }
-		.hide {
-			display: none !important;
-		}
-        .form-container {
-            background: white;
-            padding: 30px;
+
+        /* Formulaire du haut */
+        .header-fields {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+            background: #f1f2f6;
+            padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
         }
-        h2 {
-            margin-bottom: 20px;
-            color: #333;
-            font-size: 24px;
-            text-align: center;
-        }
+
         .form-group {
-            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
         }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
         label {
-            display: block;
-            margin-bottom: 5px;
-            color: #666;
-            font-weight: bold;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--secondary-color);
         }
-        input[type="text"] {
-            width: 100%;
+
+        input[type="text"], input[type="date"], textarea, select {
             padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
         }
-        input[type="text"]:focus {
-            border-color: #007BFF;
+
+        input[type="text"]:focus, input[type="date"]:focus, textarea:focus, select:focus {
             outline: none;
+            border-color: var(--accent-color);
         }
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #007BFF;
+
+        /* Catégories et Questions */
+        .category-block {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-header h2 {
+            color: white;
+        }
+
+        .questions-container {
+            padding: 10px 20px;
+            background: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .question-item {
+            padding: 20px 0;
+            border-bottom: 1px solid #f1f2f6;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 15px;
+            align-items: start;
+            transition: all 0.3s ease;
+        }
+
+        .question-item:last-child {
+            border-bottom: none;
+        }
+
+        .question-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question-main {
+            font-weight: 500;
+            margin-bottom: 4px;
+            transition: color 0.3s;
+        }
+
+        .question-comment {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .question-remark {
+            margin-top: 10px;
+            width: 95%;
+        }
+
+        /* Boutons Radio OUI / NON stylisés */
+        .radio-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .radio-group input[type="radio"] {
+            display: none;
+        }
+
+        .radio-label {
+            padding: 8px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 10px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            user-select: none;
+            text-align: center;
+            min-width: 50px;
+            background-color: #fff;
+            color: var(--text-color);
         }
-        button:hover {
-            background-color: #0056b3;
+
+        /* Effets visuels Sélectionné (Actif ou Désactivé) */
+        .radio-group input[value="OUI"]:checked + .radio-label {
+            background-color: var(--color-oui-light);
+            border-color: var(--color-oui);
+            color: var(--color-oui);
+        }
+
+        .radio-group input[value="NON"]:checked + .radio-label {
+            background-color: var(--color-non-light);
+            border-color: var(--color-non);
+            color: var(--color-non);
+        }
+
+        /* boutons non-sélectionnés quand ils sont désactivés */
+        .radio-group input:disabled:not(:checked) + .radio-label {
+            background-color: #f1f2f6;
+            border-color: var(--border-color);
+            color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .radio-group input:disabled:checked + .radio-label {
+            cursor: not-allowed;
+            /* Conserve sa couleur rouge/verte même en disabled */
+        }
+
+        /* Style pour l'état Grisé général de la catégorie */
+        .category-block.disabled {
+            border-color: #e0e0e0;
+        }
+
+        .category-block.disabled .questions-container {
+            background-color: #fcfcfc;
+            pointer-events: none; /* Empêche le clic */
+        }
+
+        .category-block.disabled .question-main {
+            color: #95a5a6; /* Texte de la question s'estompe */
+        }
+
+        .category-block.disabled .question-remark {
+            background-color: #f1f2f6;
+            color: #95a5a6;
+        }
+
+        /* Footer */
+        .footer-fields {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .submit-box {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .btn-submit {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #2980b9;
         }
 		
+		.mandatory-fields{
+			color:red;
+		}
 		
-		.form-group {
-        margin-bottom: 15px;
-        font-family: Arial, sans-serif; /* Pour correspondre au reste du formulaire */
-    }
-    label {
-        display: block;
-        margin-bottom: 5px;
-        color: #666;
-        font-weight: bold;
-        font-size: 14px;
-    }
-    select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-        font-size: 16px;
-        background-color: white;
-        color: #333;
-        cursor: pointer;
-        /* Ajout d'une légère ombre interne pour le style */
-        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M0 3l5 5 5-5z' fill='%23666'/></svg>");
-        background-repeat: no-repeat;
-        background-position: right 10px center;
-        background-size: 12px;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        padding-right: 30px;
-    }
-    select:focus {
-        border-color: #007BFF;
-        outline: none;
-    }
-	
-	
-	/* Style général de la page (dans la lignée du précédent) */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f7f6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-}
-
-.form-container {
-    background: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 450px;
-}
-
-h2 {
-    margin-bottom: 25px;
-    color: #333;
-    font-size: 24px;
-    text-align: center;
-}
-
-/* Alignement de la question et du switch */
-.question-row {
-    display: flex;
-    justify-content: space-between; /* Met la question à gauche et le switch à droite */
-    align-items: center;            /* Aligne verticalement au centre */
-    padding: 12px 0;
-    border-bottom: 1px solid #eee;  /* Petite séparation discrète entre les questions */
-}
-
-.question-row:last-of-type {
-    border-bottom: none;            /* Supprime la bordure pour la dernière ligne */
-    margin-bottom: 20px;
-}
-
-.question-title {
-    font-size: 16px;
-    color: #444;
-    font-weight: 500;
-	font-weight: bold;
-	margin: 5px 0px 0px 15px; 
-	padding: 0px;
-	max-width: 80%;
-}
-
-.question-li{
-	font-size: 14px; 
-	color: rgb(102, 102, 102);
-}
-
-/* Bouton de validation */
-.btn-submit {
-    width: 100%;
-    padding: 12px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-.btn-submit:hover {
-    background-color: #0056b3;
-}
-
-
-/* ==========================================
-   TON STYLE DE SWITCH (Bouton glisseur)
-   ========================================== */
-
-/* Le conteneur du switch */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-/* Cache la checkbox HTML par défaut */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* Le slider (fond du bouton) */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-/* La petite bille blanche */
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-/* Changement de couleur quand c'est coché */
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-/* Déplacement de la bille blanche quand c'est coché */
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-/* Arrondis */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
-.question_background{
-	background-color: lightgreen;
-}
+		.cas_background{
+			background-color: lightgreen;
+		}
+		
+		.hide{
+			display:none;
+		}
