@@ -194,6 +194,47 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 			
+			const client_name = document.getElementById("clientName").value;
+			const collab_name = document.getElementById("collabName").value;
+			const date_rdv = document.getElementById("appointmentDate").value;
+			const client_activity = document.getElementById("activitySector").value;
+			
+			document.getElementById('client_name').textContent = client_name;
+			document.getElementById('collab_name').textContent = collab_name;
+			document.getElementById('date_rdv').textContent = date_rdv;
+			document.getElementById('client_activity').textContent = client_activity;
+			
+			const container = document.getElementById('categories-container');
+			const elementsActifs = container.querySelectorAll('div.categ-div:not(.disabled)');
+			
+			const ul = document.getElementById("cas-ok");
+			
+			let dictCasKey = {};
+			
+			for(const div_categ of elementsActifs){
+				const categ = div_categ.querySelector('h2').textContent;
+				const casActifs = div_categ.querySelectorAll('h3');
+				
+				for(const cas of casActifs){
+					const li = document.createElement("li");
+					const cas_text = cas.textContent;
+					dictCasKey[cas.id] = dict_cas[cas.id]
+					cas.id
+					li.textContent = categ + " : " + cas_text;
+					ul.appendChild(li);
+				}				
+			};
+			
+			const div_table_main = document.getElementById('div-table-main');
+			
+			for (const [cas_key, cas_data] of Object.entries(dictCasKey)){
+				const div_table = document.getElementById('template-table');
+				const clone_table = div_table.content.cloneNode(true);
+				const h3_table = clone_table.querySelector('h3');
+				h3_table.textContent = cas_data["label"];
+				div_table_main.appendChild(clone_table);
+			};
+			
 			element.classList.remove("hide");
 
             // Options configurées proprement
