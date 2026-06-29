@@ -41,8 +41,10 @@
 			</div>
         </div>
 		
+		<!-- afficher par défaut tous les cas avec des regroupements par typologie, mettre en surbrillance si sélection secteur activité-->
+		
 		<template id="category-template">
-			<div class="categ-div">
+			<div class="categ-div disabled">
 				<div class="category-header">
 					<h2 class="category-title"></h2>
 					<div class="radio-group">
@@ -80,36 +82,6 @@
 		<div id="categories-container">
 		
 		</div>
-		
-		<!-- afficher par défaut tous les cas avec des regroupements par typologie, mettre en surbrillance si sélection secteur activité-->
-        <div class="category-block disabled" id="cat-A">
-            <div class="category-header">
-                <h2>Catégorie A : Vente à l'étranger</h2> <!-- label catégorie, tiers payeur... -->
-                <div class="radio-group">
-                    <span style="margin-right: 10px; font-size: 0.9rem;">Faites-vous des ventes à l'étranger ?</span>
-                    <input type="radio" id="catA-oui" name="catA_master" value="OUI" onchange="toggleCategory('A', true)">
-                    <label for="catA-oui" class="radio-label">OUI</label>
-                    
-                    <input type="radio" id="catA-non" name="catA_master" value="NON" checked onchange="toggleCategory('A', false)">
-                    <label for="catA-non" class="radio-label">NON</label>
-                </div>
-            </div>
-            <div class="questions-container" id="questions-A">
-                <div class="question-item">
-                    <div class="question-text">
-                        <span class="question-main">Question A1 : Faites-vous des ventes en Europe ?</span>
-                        <span class="question-comment">* Concerne la zone Euro et hors-UE (Suisse, UK...)</span>
-                        <input type="text" class="question-remark" name="remarque_A1" placeholder="Remarque libre pour la question A1..." disabled>
-                    </div>
-                    <div class="radio-group">
-                        <input type="radio" id="qA1-oui" name="qA1" value="OUI" disabled>
-                        <label for="qA1-oui" class="radio-label">OUI</label>
-                        <input type="radio" id="qA1-non" name="qA1" value="NON" checked disabled>
-                        <label for="qA1-non" class="radio-label">NON</label>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="submit-box">
             <button type="submit" class="btn-submit">Enregistrer la demande</button>
@@ -117,8 +89,46 @@
     </form>
 	
 	<div id="template-pdf" class="hide">
-	<p>test</p>
+		<div>
+			<div>
+				<h1>Guide RFE</h1>
+				<p>Objectif : donner aux collaborateurs une réponse simple, opérationnelle et homogène face aux questions clients liées à la Réforme de la Facture Électronique.</p>
+			</div>
+			<div>
+				<p>Nom du client : <span id="client_name"></span></p>
+				<p>Nom du collaborateur : <span id="collab_name"></span></p>
+			</div>
+			<div>
+				<p>Date du RDV : <span id="date_rdv"></span></p>
+				<p>Secteur d'activité du client : <span id="client_activity"></span></p>
+			</div>
+		</div>
+		<div>
+			<p>Cas traités :</p>
+			<ul id="cas-ok">
+				<!-- ici on intègre la valeur de catégories, exemple : tiers payeurs avec le label des cas associés à une catégorie -->
+			</ul>
+		</div>
+		<div id="div-table-main">
+			
+		</div>
 	</div>
+	
+	<template id="template-table">
+		<h2></h2> <!-- ici on intègre la valeur de catégories, exemple : tiers payeurs -->
+		<h3></h3> <!-- ici on intègre le label du cas -->
+				
+		<div>	 <!-- ici on intègre le détail de chaque élément de la procédure liée au cas -->
+			<table>
+				<tbody>
+					<tr>
+						<th></th>  <!-- DESCRIPTION -->
+						<td></td> <!-- L’acompte constitue un paiement anticipé versé avant la livraison du bien ou la réalisation complète de la prestation.-->
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</template>
 	
 </div>
 
