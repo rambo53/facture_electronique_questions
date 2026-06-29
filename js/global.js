@@ -1,74 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // 1. On cible tous les éléments du DOM
-    const inputDossier = document.getElementById("nomDossier");
-    const inputCollab = document.getElementById("nomCollaborateur");
-    const divOption = document.getElementById("divOption");
-    const selectOption = document.getElementById("monChoix");
-    const buttonValidation = document.getElementById("buttonValidation");
-	const divQuestions = document.getElementById("divCas");
-	const divTypologie = document.getElementById("divTypologie");
-
-    // 2. Fonction principale de vérification
-    function verifierFormulaire() {
-        // Récupération des valeurs en nettoyant les espaces inutiles
-        const valeurDossier = inputDossier.value.trim();
-        const valeurCollab = inputCollab.value.trim();
-        const valeurSelect = selectOption ? selectOption.value : "";
-
-        // Condition A : Le dossier est rempli
-        const dossierValide = valeurDossier !== "";
-
-        // Condition B : Le collaborateur contient EXACTEMENT 3 lettres majuscules
-        const regexTroisMajuscules = /^[A-Z]{3}$/;
-        const collabValide = regexTroisMajuscules.test(valeurCollab);
-
-        // --- ÉTAPE 1 : Gestion de l'affichage de la liste déroulante ---
-        if (dossierValide && collabValide) {
-            divOption.classList.remove("hide");
-        } else {
-            divOption.classList.add("hide");
-            // Sécurité : Si on recache la liste, on réinitialise sa valeur et on cache le bouton
-            if (selectOption) selectOption.value = "";
-			divQuestions.classList.add("hide");
-            buttonValidation.classList.add("hide");
-			divTypologie.classList.add("hide");
-            return; // On s'arrête là si les premiers inputs ne sont plus valides
-        }
-
-        // --- ÉTAPE 2 : Gestion de l'affichage du bouton Valider ---
-        // Condition C : Une option de la liste a été sélectionnée (valeur non vide)
-        const selectValide = valeurSelect !== "";
-
-        if (selectValide) {
-            buttonValidation.classList.remove("hide");
-			divQuestions.classList.remove("hide");
-			
-        } else {
-            buttonValidation.classList.add("hide");
-			divQuestions.classList.add("hide");
-			divTypologie.classList.add("hide");
-        }
-    }
-
-    // 3. Écoute des événements sur les différents champs
-    inputDossier.addEventListener("input", verifierFormulaire);
-    inputCollab.addEventListener("input", verifierFormulaire);
-    
-    if (selectOption) {
-        selectOption.addEventListener("change", verifierFormulaire);
-    }
-});
-
-
-document.addEventListener("DOMContentLoaded", function () {
-	const selectOption = document.getElementById("monChoix");
+	const selectOption = document.getElementById("activitySector");
 	const option = document.createElement("option");
 	option.value = "";
-    option.textContent = "Choisir secteur...";
+    option.textContent = "-- Choisir secteur --";
+	option.selected = true;
+	option.disabled = true;
 	selectOption.appendChild(option);
 	
-	if (typeof dict_categories !== 'undefined' && selectOption) {
-		for (const [cle, donnees] of Object.entries(dict_categories)){
+	if (typeof dict_secteur !== 'undefined' && selectOption) {
+		for (const [cle, donnees] of Object.entries(dict_secteur)){
 			// Création d'une balise <option value="CODE">LABEL</option>
 			const option_dyn = document.createElement("option");
 			option_dyn.value = cle;
@@ -80,124 +20,203 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-	const selectTypologie = document.getElementById("monChoixTypologie");
-	const option = document.createElement("option");
-	option.value = "";
-    option.textContent = "Choisir typologie...";
-	selectTypologie.appendChild(option);
+	const categTemplate = document.getElementById('category-template');
+	const questTemplate = document.getElementById('question-template');
+	const globalContainer = document.getElementById('categories-container');
 	
-	if (typeof dict_secteur !== 'undefined' && selectTypologie) {
-		for (const [cle, donnees] of Object.entries(dict_secteur)){
-			// Création d'une balise <option value="CODE">LABEL</option>
-			const option_dyn = document.createElement("option");
-			option_dyn.value = cle;
-            option_dyn.textContent = donnees["label"];
-			selectTypologie.appendChild(option_dyn);
+	for (const [key, category] of Object.entries(dict_categories)) {
+		const clone = categTemplate.content.cloneNode(true);
+		const radioOui = clone.querySelector('.radio-oui');
+		const radioNon = clone.querySelector('.radio-non');
+		const labelOui = clone.querySelector('.btn-oui');
+		const labelNon = clone.querySelector('.btn-non');
+	
+		clone.querySelector('.category-title').textContent = category.label;
+		
+		const uniqueCateg = `cat-${key}`;
+		clone.querySelector('.categ-div').id = uniqueCateg
+		
+		const nameGroup = uniqueCateg + `-master`;
+    
+		// Configuration Radio OUI
+		radioOui.name = nameGroup;
+		radioOui.id = uniqueCateg+`-oui`;
+		labelOui.setAttribute('for', uniqueCateg+`-oui`);
+		radioOui.addEventListener('change', () => toggleCategory(key, true));
+		
+		// Configuration Radio NON
+		radioNon.name = nameGroup;
+		radioNon.id = uniqueCateg+`-non`;
+		labelNon.setAttribute('for', uniqueCateg+`-non`);
+		radioNon.addEventListener('change', () => toggleCategory(key, false));
+		
+		const questionsContainer = clone.querySelector('.questions-container');
+		
+		questionsContainer.id = `questions-${key}`;
+		
+		for (const cas of category.cas) {
+			if(cas in dict_cas){
+				const process_key = "procedure";
+				const label_cas = dict_cas[cas]["label"];
+				const h3 = document.createElement("h3");
+				h3.textContent = label_cas;
+				h3.id = cas
+				questionsContainer.appendChild(h3);
+				
+				if(process_key in dict_cas[cas]){
+					const process = dict_cas[cas][process_key]
+					const questions_a_poser_key = "questions_a_poser"
+					if(questions_a_poser_key in process){
+						let questionIndex = 1;
+						for (const question of process[questions_a_poser_key]["text"]){
+							const questClone = questTemplate.content.cloneNode(true);
+							const uniqueName = `q_${key}_${cas}_${questionIndex}`;
+							
+							questClone.querySelector('.question-main').textContent = question;
+							
+							const radioOui = questClone.querySelector('.q-radio-oui');
+							const radioNon = questClone.querySelector('.q-radio-non');
+							const labelOui = questClone.querySelector('.q-label-oui');
+							const labelNon = questClone.querySelector('.q-label-non');
+							
+							radioOui.name = uniqueName;
+							radioOui.id = `${uniqueName}-oui`;
+							labelOui.setAttribute('for', `${uniqueName}-oui`);
+							
+							radioNon.name = uniqueName;
+							radioNon.id = `${uniqueName}-non`;
+							labelNon.setAttribute('for', `${uniqueName}-non`);
+	
+							questionIndex++;
+							questionsContainer.appendChild(questClone);
+						}
+					}
+				}
+			}
 		}
+				
+		globalContainer.appendChild(clone);
 	}
 });
+	
 
+function toggleCategory(catLetter, isEnabled) {
+	
+        const block = document.getElementById('cat-' + catLetter);
+        const container = document.getElementById('questions-' + catLetter);
+        const radioButtons = container.querySelectorAll('input[type="radio"]');
+        const remarkInputs = container.querySelectorAll('.question-remark');
 
-document.addEventListener("DOMContentLoaded", function () {
-    const selectSecteur = document.getElementById("monChoix");
-    const divQuestions = document.getElementById("divCas"); // Le conteneur HTML des questions
+        if (!isEnabled) {
+            block.classList.add('disabled');
+            
+            remarkInputs.forEach(input => {
+                input.disabled = true;
+                input.value = ''; 
+            });
 
-    selectSecteur.addEventListener("change", function (evenement) {
-        const optionChoisie = evenement.target.value;
-		const divTypologie = document.getElementById("divTypologie");
-		divTypologie.classList.remove("hide");
-
-        // 1. IMPORTANT : On vide le conteneur à chaque changement pour éviter l'accumulation
-        divQuestions.innerHTML = "";
-
-        if (optionChoisie === "") {
-            return;
-        }
-
-        const donneesTypologie = dict_categories[optionChoisie];
-
-        if (donneesTypologie) {
-            const list_cas = donneesTypologie["cas"];		
-			
-            list_cas.forEach((cas) => {
-                
-                // On vérifie que la question existe bien dans ton dictionnaire de questions
-                if (cas in dict_cas) {
-                    const question_text = dict_cas[cas]["label"];
-
-                    // --- CRÉATION DES ÉLÉMENTS HTML ---
-                    
-                    // Conteneur de la ligne (<div class="question-row">)
-                    const main_div = document.createElement("div");
-                    main_div.classList.add("question-row");
-
-                    // Texte de la question (<span class="question-text">)
-                    const span = document.createElement("span");
-                    span.classList.add("question-title");
-                    span.textContent = question_text;
-					span.setAttribute("data-id-cas", cas);
-					
-					const ul = document.createElement("ul");
-					ul.classList.add("question-ul");
-
-                    // Conteneur du switch (<label class="switch">)
-                    const label = document.createElement("label");
-                    label.classList.add("switch");
-
-                    // La checkbox (<input type="checkbox">)
-                    const input = document.createElement("input");
-                    input.setAttribute("type", "checkbox");
-                    input.setAttribute("name", dict_cas[cas]["label"]);
-
-                    // Le slider rond (<span class="slider round">)
-                    const second_span = document.createElement("span");
-                    second_span.classList.add("slider", "round");
-
-                    // --- IMBRICATION DES ÉLÉMENTS (L'étape manquante !) ---
-                    
-                    // On assemble le switch : on met l'input et le slider DANS le label
-                    label.appendChild(input);
-                    label.appendChild(second_span);
-
-                    // On assemble la ligne : on met le texte et le switch DANS la ligne
-                    main_div.appendChild(span);
-					span.appendChild(ul);
-					
-					// mettre en place boucle sur questions
-					const list_questions_cas = dict_cas[cas]["procedure"]["questions_a_poser"]["text"];
-					
-					if(Array.isArray(list_questions_cas)){
-						list_questions_cas.forEach((question) => {
-							const li = document.createElement("li");
-							li.classList.add("question-li");
-							li.textContent = question;
-							ul.appendChild(li);
-						});	
-					}
-				
-					main_div.appendChild(label);
-
-                    // Enfin, on injecte la ligne complète dans le conteneur principal de la page
-                    divQuestions.appendChild(main_div);
+            radioButtons.forEach(radio => {
+                radio.disabled = true;
+                if (radio.value === 'NON') {
+                    radio.checked = true;
+                } else {
+                    radio.checked = false;
                 }
-            }); 
+            });
+        } else {
+            block.classList.remove('disabled');
+            
+            remarkInputs.forEach(input => {
+                input.disabled = false;
+            });
+
+            radioButtons.forEach(radio => {
+                radio.disabled = false;
+            });
         }
-    });
-});
+    }
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    const selectTypologie = document.getElementById("monChoixTypologie");
+    const selectTypologie = document.getElementById("activitySector");
 
     selectTypologie.addEventListener("change", function (evenement) {
        const optionChoisie = evenement.target.value;
 	   
-	   // si une option est choisit on requête le dict des typologie pour retrouver notre typologie "question_background" css
-	   // récupérer les cas associés à cette typologie depuis notre balise "div" avec la classe "question_row" et on les passe avec un background vert clair
-	   
-       if (optionChoisie === "") {
+	   if (optionChoisie === "") {
             return;
        }
+	   
+	   // si une option est choisit on requête le dict des typologie pour retrouver notre typologie "cas_background" css
+	   // récupérer les cas associés à cette typologie depuis notre balise "div" avec la classe "question_row" et on les passe avec un background vert clair
+	   if(optionChoisie in dict_secteur){
+		   const dict_secteur_option = dict_secteur[optionChoisie];
+		   const cas_key = "cas";
+		   
+		   const categ_container = document.getElementById("categories-container");
+		   const list_background_green = categ_container.querySelectorAll('.cas_background');
+		   
+		   for (const element_green of list_background_green){
+				element_green.classList.remove("cas_background");
+			}
+		   
+		   
+		   if(cas_key in dict_secteur_option){
+			   for (const cas of dict_secteur_option[cas_key]){
+				   const cas_element = document.getElementById(cas);
+				   cas_element.classList.add("cas_background");
+				   const divs = document.querySelectorAll('h3 ~ div');
+				   
+				   for (const div of divs){
+					   div.classList.add("cas_background");
+				   }
+			   }
+		   }
+	   }
+	   
     });
 
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById('classificationForm');
+    
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Stop la soumission native immédiatement
+            
+            const element = document.getElementById('template-pdf');
+            
+            if (!element) {
+                console.error("L'élément #template-pdf n'existe pas dans le DOM.");
+                return;
+            }
+			
+			element.classList.remove("hide");
+
+            // Options configurées proprement
+            const options = {
+                margin:       10,
+                filename:     'mon_document.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, 
+                    logging: false, // Change à true si tu veux debugger l'image interne
+                    useCORS: true   // Évite les blocages d'images si tu en ajoutes
+                }, 
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            // Version chaînée (worker pattern) recommandée par la documentation de html2pdf
+            html2pdf()
+                .set(options)
+                .from(element)
+                .save()
+                .catch(err => {
+                    console.error("Erreur html2pdf :", err);
+                });
+        });
+    }
 });
