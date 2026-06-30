@@ -232,6 +232,22 @@ document.addEventListener("DOMContentLoaded", function () {
 				const clone_table = div_table.content.cloneNode(true);
 				const h3_table = clone_table.querySelector('h3');
 				h3_table.textContent = cas_data["label"];
+				
+				const tbody_table = clone_table.querySelector('tbody');
+				
+				for(const [key_process, process_data] of Object.entries(cas_data["procedure"])){
+					const tr = document.createElement("tr");
+					const th = document.createElement("th");
+					const td = document.createElement("td");
+					
+					th.textContent = process_data["label"];
+					td.textContent = process_data["text"];
+				
+					tr.appendChild(th);
+					tr.appendChild(td);
+					tbody_table.appendChild(tr);
+				};
+
 				div_table_main.appendChild(clone_table);
 			};
 			
