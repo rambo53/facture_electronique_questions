@@ -241,8 +241,17 @@ document.addEventListener("DOMContentLoaded", function () {
 					const td = document.createElement("td");
 					
 					th.textContent = process_data["label"];
-					td.textContent = process_data["text"];
-				
+					
+					let text_process = process_data["text"]
+					if (typeof text_process === 'string') {
+						td.textContent = text_process;
+					} else if (Array.isArray(text_process)) {
+						td.style.whiteSpace = "pre-line";
+						for(const t of text_process){
+							td.textContent += "- "+t+"\n"
+						};
+					};
+
 					tr.appendChild(th);
 					tr.appendChild(td);
 					tbody_table.appendChild(tr);
