@@ -56,10 +56,16 @@ document.addEventListener("DOMContentLoaded", function () {
             labelOui.setAttribute("for", uniqueCateg + "-oui");
             radioOui.addEventListener("change", () => toggleCategory(key, true));
 
-            radioNon.name = nameGroup;
-            radioNon.id = uniqueCateg + "-non";
-            labelNon.setAttribute("for", uniqueCateg + "-non");
-            radioNon.addEventListener("change", () => toggleCategory(key, false));
+			radioNon.name = nameGroup;
+			radioNon.id = uniqueCateg + "-non";
+			labelNon.setAttribute("for", uniqueCateg + "-non");
+			radioNon.addEventListener("change", () => toggleCategory(key, false));
+
+			// Catégorie ouverte par défaut
+			radioOui.checked = true;
+			radioNon.checked = false;
+			clone.querySelector(".categ-div").classList.remove("disabled");
+			setTimeout(() => toggleCategory(key, true), 0);
 
             const questionsContainer = clone.querySelector(".questions-container");
             questionsContainer.id = `questions-${key}`;
@@ -194,15 +200,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            const client_name = document.getElementById("clientName").value;
-            const collab_name = document.getElementById("collabName").value;
-            const date_rdv = document.getElementById("appointmentDate").value;
-            const client_activity = document.getElementById("activitySector").value;
+			const client_name = document.getElementById("clientName").value;
+			const collab_name = document.getElementById("collabName").value;
+			const date_rdv = document.getElementById("appointmentDate").value;
+			const client_activity_select = document.getElementById("activitySector");
+			const client_activity = client_activity_select.options[client_activity_select.selectedIndex]?.textContent || "";
+			const free_notes = document.getElementById("freeNotes").value.trim();
 
-            document.getElementById("client_name").textContent = client_name;
-            document.getElementById("collab_name").textContent = collab_name;
-            document.getElementById("date_rdv").textContent = date_rdv;
-            document.getElementById("client_activity").textContent = client_activity;
+			document.getElementById("client_name").textContent = client_name;
+			document.getElementById("collab_name").textContent = collab_name;
+			document.getElementById("date_rdv").textContent = date_rdv;
+			document.getElementById("client_activity").textContent = client_activity;
+			document.getElementById("pdf_free_notes").textContent = free_notes || "Aucune note";
 
             const container = document.getElementById("categories-container");
             const elementsActifs = container.querySelectorAll("div.categ-div:not(.disabled)");
@@ -219,21 +228,57 @@ document.addEventListener("DOMContentLoaded", function () {
 
 				for (const casBlock of casBlocks) {
 
-					const casTitre = casBlock.querySelector("h3");
-					const auMoinsUnOui = casBlock.querySelector('.q-radio-oui:checked');
+				const casTitre = casBlock.querySelector("h3");
+				const auMoinsUnOui = casBlock.querySelector('.q-radio-oui:checked');
 
-					// Si aucune réponse OUI dans ce cas, on ne le remonte pas
-					if (!auMoinsUnOui) {
-						continue;
+				const remarks = casBlock.querySelectorAll(".question-remark");
+				const notes = [];
+
+				remarks.forEach(input => {
+					const valeur = input.value.trim();
+
+					if (valeur !== "") {
+						const question = input
+							.closest(".question-item")
+							.querySelector(".question-main")
+							.textContent;
+
+						notes.push(question + " : " + valeur);
+					}
+				});
+
+				// On remonte le cas si au moins une réponse est OUI
+				// OU si au moins une note est renseignée
+				if (!auMoinsUnOui && notes.length === 0) {
+					continue;
+				}
+
+				const li = document.createElement("li");
+				const cas_text = casTitre.textContent;
+
+				// IMPORTANT :
+					// On ajoute la fiche détaillée uniquement si au moins une réponse est à OUI.
+					// Une simple note permet d'afficher le cas dans la liste "Cas traités",
+					// mais ne doit pas faire remonter la fiche complète du cas.
+					if (auMoinsUnOui) {
+						dictCasKey[casTitre.id] = dict_cas[casTitre.id];
 					}
 
-					const li = document.createElement("li");
-					const cas_text = casTitre.textContent;
+				li.textContent = categ + " : " + cas_text;
 
-					dictCasKey[casTitre.id] = dict_cas[casTitre.id];
+				if (notes.length > 0) {
+					const sousListe = document.createElement("ul");
 
-					li.textContent = categ + " : " + cas_text;
-					ul.appendChild(li);
+					notes.forEach(note => {
+						const noteLi = document.createElement("li");
+						noteLi.textContent = note;
+						sousListe.appendChild(noteLi);
+					});
+
+					li.appendChild(sousListe);
+				}
+
+				ul.appendChild(li);
 				}
             }
 
