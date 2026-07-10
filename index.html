@@ -36,24 +36,32 @@
                 <label for="freeNotes">Notes libres</label>
                 <textarea id="freeNotes" name="freeNotes" rows="3" placeholder="Saisissez vos remarques générales ici..."></textarea>
             </div>
-			<div class="form-group full-width">
-				<span class="mandatory-fields"> * Champs obligatoires</span>
+			<div class="form-group full-width form-info">
+				<span class="mandatory-fields">
+					* Champs obligatoires
+				</span>
+
+				<span class="sector-info">
+					<span class="green-dot">●</span>
+					Les cas affichés en vert sont ceux qui sont le plus fréquemment rencontrés pour le secteur d'activité sélectionné.
+					Ils constituent une indication et ne couvrent pas nécessairement toutes les situations.
+				</span>
 			</div>
         </div>
 		
 		<!-- afficher par défaut tous les cas avec des regroupements par typologie, mettre en surbrillance si sélection secteur activité-->
 		
 		<template id="category-template">
-			<div class="categ-div disabled">
+			<div class="categ-div">
 				<div class="category-header">
 					<h2 class="category-title"></h2>
 					<div class="radio-group">
 						<span class="category-subtitle" style="margin-right: 10px; font-size: 0.9rem;"></span>
 						
-						<input type="radio" class="radio-oui" value="OUI">
+						<input type="radio" class="radio-oui" value="OUI" checked>
 						<label class="radio-label btn-oui">OUI</label>
 						
-						<input type="radio" class="radio-non" value="NON" checked>
+						<input type="radio" class="radio-non" value="NON">
 						<label class="radio-label btn-non">NON</label>
 					</div>
 				</div>
@@ -101,6 +109,7 @@
 			<div>
 				<p>Date du RDV : <span id="date_rdv"></span></p>
 				<p>Secteur d'activité du client : <span id="client_activity"></span></p>
+				<p>Notes libres : <span id="pdf_free_notes"></span></p>
 			</div>
 		</div>
 		<div>
