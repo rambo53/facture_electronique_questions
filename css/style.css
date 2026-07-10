@@ -353,3 +353,23 @@
 		font-size: 20px;
 		margin-bottom: 12px;
 	}
+	
+	.form-info {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 6px;
+		margin-top: 8px;
+	}
+
+	.mandatory-fields {
+		color: red;
+	}
+
+	.sector-info {
+		color: #2ecc71;
+		font-size: 1rem;
+		font-weight: 600;
+		text-align: center;
+		max-width: 90%;
+	}
