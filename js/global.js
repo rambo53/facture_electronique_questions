@@ -15,7 +15,12 @@ document.addEventListener("DOMContentLoaded", function () {
         selectOption.appendChild(option);
 
         if (typeof dict_secteur !== "undefined") {
-            for (const [cle, donnees] of Object.entries(dict_secteur)) {
+			// Tri par ordre alphabétique selon la clé (a[0] vs b[0])
+            const secteursTries = Object.entries(dict_secteur).sort((a, b) => 
+                a[0].localeCompare(b[0])
+            );
+			
+            for (const [cle, donnees] of secteursTries) {
                 const option_dyn = document.createElement("option");
                 option_dyn.value = cle;
                 option_dyn.textContent = donnees["label"];
